@@ -1,44 +1,63 @@
-<!doctype html>
+<!-- <?php 
+    $people = getPeople();
+?> -->
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>J2F1BELP5L2 - Content uit je database</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
-
-	<!-- laad hier via php je header in (vanuit je includes map) -->
-		<?php
-			include('includes/header.php')
-		?>
-
-
-	<!-- Haal hier uit de URL welke pagina uit het menu is opgevraagd. Gebruik deze om de content uit de database te halen. -->
-
-	<?php
-		$servername = "localhost";
-		$username = "root";
-		$password = "mysql";
-
-		try {
-		$conn = new PDO("mysql:host=$servername;dbname=databank_php", $username, $password);
-		// set the PDO error mode to exception
-		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		echo "Connected successfully";
-		} catch(PDOException $e) {
-		echo "Connection failed: " . $e->getMessage();
-		}
-	?>
-
-
-	<!-- Laat hier de content die je op hebt gehaald uit de database zien op de pagina. -->
-		<?php
-			
-		?>
-
-	<!-- laad hier via php je footer in (vanuit je includes map)-->
-
+    <?php foreach($people as $person){ ?>
+        <h1><?= $person['name'] ?></h1>
+    <?php } ?>
 
 </body>
 </html>
+
+<?php
+function getPeople(){
+
+// maak een verbinding
+    $connection = connect();
+
+// maak een query
+    $query = "SELECT * FROM onderwerpen";
+
+// voorbereid een query
+    $statement = $connection->prepare($query);
+
+// voer de query uit
+    $statement->execute();
+
+// haal de result op
+    $result = $statement->fetchALl();
+
+    return $result;
+
+}
+
+?>
+<?php
+function connect()
+	{
+		try {
+			$serveraddress = "localhost";
+			$dbname = "databank_php";
+			$username = "root";
+			$password = "mysql";
+
+			$conn = new PDO("mysql:host=$serveraddress;dbname=databank_php", $username, $password);
+			// set the PDO error mode to exception
+			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			return $conn;
+			echo "Connected successfully";
+		} catch(PDOException $e) {
+			echo "Connection failed: " . $e->getMessage();
+		}
+	}
+?>
+
