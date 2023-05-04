@@ -1,46 +1,21 @@
-<!-- <?php 
-    $people = getPeople();
-?> -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <?php foreach($people as $person){ ?>
-        <h1><?= $person['name'] ?></h1>
-    <?php } ?>
-
-</body>
-</html>
-
 <?php
-function getPeople(){
+    include("includes/header.php");
+  ?>
+    
+	<link rel="stylesheet" href="css/style.css">
 
-// maak een verbinding
-    $connection = connect();
+	<!-- laad hier via php de juiste contentpagina in (vanuit de pages map) in. Welke geselecteerd moet worden kun je uit de URL halen (URL_Params).-->
+  <?php
+      if(array_key_exists("name", $_GET ) && $_GET["name"] == "Ellie") {
+          include("characters/Ellie.php");
+      }
+      else if(array_key_exists("name", $_GET ) && $_GET["name"] == "Clicker") {
+          include("characters/Clicker.php");
+      }
+    ?>
+  
 
-// maak een query
-    $query = "SELECT * FROM onderwerpen";
 
-// voorbereid een query
-    $statement = $connection->prepare($query);
-
-// voer de query uit
-    $statement->execute();
-
-// haal de result op
-    $result = $statement->fetchALl();
-
-    return $result;
-
-}
-
-?>
 <?php
 function connect()
 	{
@@ -54,10 +29,12 @@ function connect()
 			// set the PDO error mode to exception
 			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			return $conn;
-			echo "Connected successfully";
 		} catch(PDOException $e) {
 			echo "Connection failed: " . $e->getMessage();
 		}
 	}
 ?>
 
+<?php
+    include("includes/footer.php");
+  ?>

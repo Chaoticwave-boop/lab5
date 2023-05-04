@@ -1,0 +1,11 @@
+img{
+    height: 240px;
+    width: 240px;
+}
+
+#header{
+    display: flex;
+    justify-content: space-evenly;
+    background-color: coral;
+    height: 40px;
+}
